@@ -1,6 +1,5 @@
 package com.example.util.design.components
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,19 +11,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.util.design.foundation.SpecialTheme
-import nl.jacobras.design.R
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import unlockyourdesignsystem.design.generated.resources.Res
+import unlockyourdesignsystem.design.generated.resources.cat_derp
+import unlockyourdesignsystem.design.generated.resources.read_more
 
 @Composable
 fun SpecialCard(
     title: String,
     content: String,
-    @DrawableRes image: Int,
+    image: Painter,
     modifier: Modifier = Modifier
 ) {
     Card(modifier) {
@@ -42,7 +44,7 @@ fun SpecialCard(
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Image(
                     modifier = Modifier.size(120.dp, 80.dp),
-                    painter = painterResource(id = image),
+                    painter = image,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
@@ -58,7 +60,7 @@ fun SpecialCard(
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.primary
                 ),
-                text = stringResource(R.string.read_more)
+                text = stringResource(Res.string.read_more)
             )
         }
     }
@@ -71,7 +73,7 @@ private fun Preview() {
         SpecialCard(
             title = "Nice card",
             content = "Content",
-            image = R.drawable.cat_derp
+            image = painterResource(Res.drawable.cat_derp)
         )
     }
 }
