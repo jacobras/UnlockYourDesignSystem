@@ -26,10 +26,11 @@ kotlin {
             implementation(libs.compose.resources)
             implementation(libs.compose.ui)
             implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.compottie)
+            implementation(libs.compottie.resources)
         }
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling)
-            implementation(libs.lottie)
         }
     }
 }
