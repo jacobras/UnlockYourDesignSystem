@@ -25,3 +25,4 @@ dependencyResolutionManagement {
 rootProject.name = "UnlockYourDesignSystem"
 include(":app")
 include(":design")
+include(":gallery")
