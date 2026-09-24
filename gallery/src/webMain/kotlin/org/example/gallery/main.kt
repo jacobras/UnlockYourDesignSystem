@@ -1,12 +1,18 @@
 package org.example.gallery
 
-import androidx.compose.material3.Text
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
+import com.example.util.design.components.SpecialButton
+import com.example.util.design.foundation.SpecialTheme
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     ComposeViewport {
-        Text("Hello, World!")
+        SpecialTheme {
+            SpecialButton(
+                label = "Hello, World!",
+                onClick = {}
+            )
+        }
     }
 }
