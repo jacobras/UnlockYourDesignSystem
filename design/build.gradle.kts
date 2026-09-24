@@ -1,24 +1,36 @@
+@file:Suppress("OPT_IN_USAGE")
+
 plugins {
-    alias(libs.plugins.android.library)
+    kotlin("multiplatform")
+    alias(libs.plugins.android.kmp.library)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.compose.multiplatform)
 }
 
-android {
-    namespace = "nl.jacobras.design"
-    compileSdk {
-        version = release(37)
+kotlin {
+    android {
+        namespace = "nl.jacobras.design"
+        compileSdk {
+            version = release(37)
+        }
+        androidResources {
+            enable = true
+        }
     }
-    buildFeatures {
-        compose = true
-    }
-}
+    wasmJs { browser() }
 
-dependencies {
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.tooling)
-    implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.lottie)
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.resources)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.compottie)
+            implementation(libs.compottie.resources)
+        }
+        androidMain.dependencies {
+            implementation(libs.compose.ui.tooling)
+        }
+    }
 }
