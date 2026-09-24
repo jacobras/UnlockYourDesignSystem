@@ -16,6 +16,7 @@ import com.example.util.design.foundation.SpecialTheme
 @Composable
 fun SpecialButton(
     label: String,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Button(
@@ -27,6 +28,7 @@ fun SpecialButton(
             color = Color.Blue.copy(red = 0.3f, green = 0.3f),
             shape = ButtonDefaults.shape
         ),
+        enabled = enabled,
         onClick = onClick
     ) {
         Text(
