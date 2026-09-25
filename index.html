@@ -1,20 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TalkGallery</title>
-    <link type="text/css" rel="stylesheet" href="styles.css">
-</head>
-<body style="text-align: center; align-content: center">
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 50 50" role="presentation">
-        <circle cx="25" cy="25" r="20" stroke="#ccc" stroke-width="4" fill="none"/>
-        <circle cx="25" cy="25" r="20" stroke="#333" stroke-width="4" fill="none" stroke-linecap="round"
-                stroke-dasharray="90 125">
-            <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s"
-                              repeatCount="indefinite"/>
-        </circle>
-    </svg>
-    <script type="application/javascript" src="gallery.js"></script>
-</body>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gallery</title>
+<style>
+    :root { color-scheme: light dark; }
+    html, body { height: 100%; margin: 0; }
+    body { display: flex; flex-direction: column; font-family: system-ui, sans-serif; }
+    header {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .5rem .75rem; border-bottom: 1px solid rgba(128, 128, 128, .4);
+    }
+    h1 { flex: 1; margin: 0; font-size: 1rem; font-weight: 600; }
+    select { font: inherit; padding: .25rem .5rem; }
+    iframe { flex: 1; width: 100%; border: 0; }
+</style>
+
+<header>
+    <h1>Gallery</h1>
+    <label for="version">Version</label>
+    <select id="version"></select>
+</header>
+<iframe id="app" title="Gallery"></iframe>
+
+<script>
+    const VERSIONS = [""];
+
+    const latest = VERSIONS[VERSIONS.length - 1];
+    const requested = new URLSearchParams(location.search).get("v");
+    const current = VERSIONS.includes(requested) ? requested : latest;
+
+    const select = document.getElementById("version");
+    for (const version of [...VERSIONS].reverse()) {
+      const label = version === latest ? version + " (latest)" : version;
+      select.add(new Option(label, version, false, version === current));
+    }
+
+    document.getElementById("app").src = "./" + current + "/";
+
+    // Full reload, so the back button steps between versions
+    select.addEventListener("change", () => {
+      location.search = "?v=" + encodeURIComponent(select.value);
+    });
+</script>
 </html>
