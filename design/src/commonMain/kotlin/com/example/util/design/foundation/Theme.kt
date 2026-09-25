@@ -15,7 +15,7 @@ fun SpecialTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = specialTypography(),
         content = content
     )
 }
