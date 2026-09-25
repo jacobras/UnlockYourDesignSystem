@@ -1,5 +1,6 @@
 package org.example.gallery
 
+import UnlockYourDesignSystem.gallery.BuildConfig
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,7 +42,7 @@ internal fun GalleryApp() {
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Gallery",
+                            text = "Gallery ${BuildConfig.LIBRARY_VERSION}",
                             style = MaterialTheme.typography.titleLarge
                         )
                     },
