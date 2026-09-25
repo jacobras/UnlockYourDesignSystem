@@ -11,9 +11,11 @@ import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.TextDecrease
 import androidx.compose.material.icons.filled.TextIncrease
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
@@ -37,7 +39,12 @@ internal fun GalleryApp() {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Gallery") },
+                    title = {
+                        Text(
+                            text = "Gallery",
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    },
                     actions = {
                         ActionMenu(
                             items = listOf(
@@ -76,7 +83,7 @@ internal fun GalleryApp() {
                     directive = navigator.scaffoldDirective,
                     value = navigator.scaffoldValue,
                     listPane = {
-                        Column {
+                        Column(Modifier.preferredWidth(260.dp)) {
                             for (screen in Screen.entries) {
                                 ScreenListItem(
                                     title = screen.title,
@@ -102,6 +109,11 @@ internal fun GalleryApp() {
                             ) {
                                 screen.content()
                             }
+                        }
+                    },
+                    paneExpansionDragHandle = {
+                        Box(contentAlignment = Alignment.Center) {
+                            VerticalDivider()
                         }
                     }
                 )
@@ -131,6 +143,7 @@ private fun ScreenListItem(
         } else {
             FontWeight.Normal
         },
+        style = MaterialTheme.typography.bodyLarge,
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
