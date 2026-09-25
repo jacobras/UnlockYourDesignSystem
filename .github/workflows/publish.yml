@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: publish-gallery
   cancel-in-progress: true
 
 jobs:
@@ -21,7 +21,37 @@ jobs:
       - name: Build gallery
         run: ./gradlew :gallery:wasmJsBrowserDistribution
 
+      - name: Check out current gh-pages
+        uses: actions/checkout@v6
+        continue-on-error: true # Branch won't exist on first run
+        with:
+          ref: gh-pages
+          path: gh-pages-current
+
+      - name: Stage site
+        run: |
+          VERSION=$(grep -E '^[[:space:]]*version[[:space:]]*=' gradle.properties | head -n1 | cut -d= -f2- | tr -d '[:space:]')
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          
+          mkdir -p "site/$VERSION"
+          cp -r gallery/build/dist/wasmJs/productionExecutable/. "site/$VERSION/"
+          
+          # Existing version folders plus the new one, oldest first, as a JS array literal
+          VERSIONS_JSON=$(
+            {
+              find gh-pages-current -mindepth 1 -maxdepth 1 -type d -printf '%f\n' 2>/dev/null | grep -E '^[0-9]' || true
+              echo "$VERSION"
+            } | sort -Vu | jq -R . | jq -sc .
+          )
+          echo "Publishing $VERSION; list = $VERSIONS_JSON"
+          
+          sed "s|__VERSIONS__|$VERSIONS_JSON|" gallery/pages-template/index.html > site/index.html
+          
+          rm -rf gh-pages-current
+
       - name: Publish gallery
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: gallery/build/dist/wasmJs/productionExecutable
+          folder: site
+          clean: false # Don't delete the other versions
+          commit-message: Publish gallery ${{ env.VERSION }}
