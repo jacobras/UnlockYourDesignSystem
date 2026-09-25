@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.util.design.components.SpecialCard
+import org.example.gallery.playgrounds.util.provideGalleryFontSize
 import org.jetbrains.compose.resources.painterResource
 import unlockyourdesignsystem.design.generated.resources.Res
 import unlockyourdesignsystem.design.generated.resources.cat_derp
@@ -17,11 +18,13 @@ fun CardPlayground() {
     val state = remember { CardPlaygroundState() }
 
     Column {
-        SpecialCard(
-            title = state.title,
-            content = state.content,
-            image = painterResource(Res.drawable.cat_derp)
-        )
+        provideGalleryFontSize {
+            SpecialCard(
+                title = state.title,
+                content = state.content,
+                image = painterResource(Res.drawable.cat_derp)
+            )
+        }
         CardPlaygroundControls(state)
     }
 }

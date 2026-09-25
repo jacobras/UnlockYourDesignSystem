@@ -5,6 +5,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.TextDecrease
+import androidx.compose.material.icons.filled.TextIncrease
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -18,15 +23,44 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.util.design.foundation.SpecialTheme
 import kotlinx.coroutines.launch
+import nl.jacobras.composeactionmenu.ActionMenu
+import nl.jacobras.composeactionmenu.RegularActionItem
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 internal fun GalleryApp() {
-    SpecialTheme(darkTheme = false) {
+    SpecialTheme(darkTheme = GalleryState.darkTheme) {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Gallery") }
+                    title = { Text("Gallery") },
+                    actions = {
+                        ActionMenu(
+                            items = listOf(
+                                RegularActionItem(
+                                    key = "fontScale",
+                                    title = "Font scale",
+                                    iconVector = when (GalleryState.fontScale) {
+                                        FontScale.Regular -> Icons.Default.TextIncrease
+                                        FontScale.Large -> Icons.Default.TextDecrease
+                                    },
+                                    onClick = {
+                                        GalleryState.fontScale = GalleryState.fontScale.next()
+                                    }
+                                ),
+                                RegularActionItem(
+                                    key = "darkTheme",
+                                    title = "Dark theme",
+                                    iconVector = if (GalleryState.darkTheme) {
+                                        Icons.Default.LightMode
+                                    } else {
+                                        Icons.Default.DarkMode
+                                    },
+                                    onClick = { GalleryState.darkTheme = !GalleryState.darkTheme }
+                                )
+                            )
+                        )
+                    }
                 )
             }
         ) { paddingValues ->

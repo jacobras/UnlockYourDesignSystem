@@ -14,9 +14,11 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.compose.action.menu)
             implementation(libs.compose.adaptive.layout)
             implementation(libs.compose.adaptive.navigation)
             implementation(libs.compose.foundation)
+            implementation(libs.compose.icons.extended)
             implementation(libs.compose.material3)
             implementation(libs.compose.resources)
             implementation(libs.compose.ui)
