@@ -1,14 +1,11 @@
 package org.example.gallery.playgrounds
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import com.example.util.design.components.SpecialCard
 import org.example.gallery.playgrounds.util.Playground
+import org.example.gallery.playgrounds.util.controls.LabelControl
 import org.jetbrains.compose.resources.painterResource
 import unlockyourdesignsystem.design.generated.resources.Res
 import unlockyourdesignsystem.design.generated.resources.cat_derp
@@ -20,8 +17,8 @@ fun CardPlayground() {
     Playground(
         component = {
             SpecialCard(
-                title = state.title,
-                content = state.content,
+                title = state.title.value,
+                content = state.content.value,
                 image = painterResource(Res.drawable.cat_derp)
             )
         },
@@ -31,19 +28,17 @@ fun CardPlayground() {
 
 @Composable
 private fun CardPlaygroundControls(state: CardPlaygroundState) {
-    Column {
-        TextField(
-            value = state.title,
-            onValueChange = { state.title = it }
-        )
-        TextField(
-            value = state.content,
-            onValueChange = { state.content = it }
-        )
-    }
+    LabelControl(
+        name = "Title",
+        state = state.title
+    )
+    LabelControl(
+        name = "Content",
+        state = state.content
+    )
 }
 
 private class CardPlaygroundState {
-    var title by mutableStateOf("Hello")
-    var content by mutableStateOf("Some content")
+    var title = mutableStateOf("Hello")
+    var content = mutableStateOf("Some content")
 }

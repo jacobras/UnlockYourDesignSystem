@@ -1,7 +1,9 @@
 package org.example.gallery.playgrounds.util
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -22,7 +24,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun Playground(
     component: @Composable () -> Unit,
-    controls: @Composable () -> Unit = { NoControlsAvailable() }
+    controls: @Composable ColumnScope.() -> Unit = { NoControlsAvailable() }
 ) {
     Row(Modifier.fillMaxSize()) {
         Box(
@@ -44,7 +46,8 @@ fun Playground(
                 .width(320.dp)
                 .fillMaxHeight()
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
                 text = "Controls",
