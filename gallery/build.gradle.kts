@@ -4,6 +4,7 @@ plugins {
     kotlin("multiplatform")
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.buildConfig)
 }
 
 kotlin {
@@ -26,4 +27,8 @@ kotlin {
             implementation(project(":design"))
         }
     }
+}
+
+buildConfig {
+    buildConfigField("LIBRARY_VERSION", version.toString())
 }
