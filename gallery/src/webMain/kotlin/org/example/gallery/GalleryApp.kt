@@ -1,26 +1,33 @@
 package org.example.gallery
 
+import UnlockYourDesignSystem.gallery.BuildConfig
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.TextDecrease
 import androidx.compose.material.icons.filled.TextIncrease
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.example.util.design.foundation.SpecialTheme
 import kotlinx.coroutines.launch
 import nl.jacobras.composeactionmenu.ActionMenu
@@ -33,7 +40,12 @@ internal fun GalleryApp() {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Gallery") },
+                    title = {
+                        Text(
+                            text = "Gallery ${BuildConfig.LIBRARY_VERSION}",
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    },
                     actions = {
                         ActionMenu(
                             items = listOf(
@@ -72,11 +84,12 @@ internal fun GalleryApp() {
                     directive = navigator.scaffoldDirective,
                     value = navigator.scaffoldValue,
                     listPane = {
-                        Column {
+                        Column(Modifier.preferredWidth(260.dp)) {
                             for (screen in Screen.entries) {
-                                Text(
-                                    text = screen.title,
-                                    modifier = Modifier.clickable {
+                                ScreenListItem(
+                                    title = screen.title,
+                                    selected = navigator.currentDestination?.contentKey == screen,
+                                    onClick = {
                                         scope.launch {
                                             navigator.navigateTo(
                                                 pane = ListDetailPaneScaffoldRole.Detail,
@@ -98,9 +111,43 @@ internal fun GalleryApp() {
                                 screen.content()
                             }
                         }
+                    },
+                    paneExpansionDragHandle = {
+                        Box(contentAlignment = Alignment.Center) {
+                            VerticalDivider()
+                        }
                     }
+                )
+            }
+
+            LaunchedEffect(Unit) {
+                // Preselect first entry
+                navigator.navigateTo(
+                    pane = ListDetailPaneScaffoldRole.Detail,
+                    contentKey = Screen.entries.first()
                 )
             }
         }
     }
+}
+
+@Composable
+private fun ScreenListItem(
+    title: String,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Text(
+        text = title,
+        fontWeight = if (selected) {
+            FontWeight.Bold
+        } else {
+            FontWeight.Normal
+        },
+        style = MaterialTheme.typography.bodyLarge,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+    )
 }
