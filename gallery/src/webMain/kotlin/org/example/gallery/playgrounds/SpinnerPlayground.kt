@@ -12,7 +12,6 @@ fun SpinnerPlayground() {
     Playground(
         component = {
             SpecialSpinner(Modifier.size(128.dp))
-        },
-        controls = {}
+        }
     )
 }
