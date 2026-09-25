@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
@@ -21,6 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.example.util.design.foundation.SpecialTheme
 import kotlinx.coroutines.launch
 import nl.jacobras.composeactionmenu.ActionMenu
@@ -74,9 +77,10 @@ internal fun GalleryApp() {
                     listPane = {
                         Column {
                             for (screen in Screen.entries) {
-                                Text(
-                                    text = screen.title,
-                                    modifier = Modifier.clickable {
+                                ScreenListItem(
+                                    title = screen.title,
+                                    selected = navigator.currentDestination?.contentKey == screen,
+                                    onClick = {
                                         scope.launch {
                                             navigator.navigateTo(
                                                 pane = ListDetailPaneScaffoldRole.Detail,
@@ -103,4 +107,24 @@ internal fun GalleryApp() {
             }
         }
     }
+}
+
+@Composable
+private fun ScreenListItem(
+    title: String,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Text(
+        text = title,
+        fontWeight = if (selected) {
+            FontWeight.Bold
+        } else {
+            FontWeight.Normal
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+    )
 }
