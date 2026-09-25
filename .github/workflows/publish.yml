@@ -1,0 +1,27 @@
+name: Publish
+
+on:
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Build gallery
+        run: ./gradlew :gallery:wasmJsBrowserDistribution
+
+      - name: Publish gallery
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: gallery/build/dist/wasmJs/productionExecutable

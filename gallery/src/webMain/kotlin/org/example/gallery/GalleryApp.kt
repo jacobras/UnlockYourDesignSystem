@@ -1,0 +1,106 @@
+package org.example.gallery
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.TextDecrease
+import androidx.compose.material.icons.filled.TextIncrease
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import com.example.util.design.foundation.SpecialTheme
+import kotlinx.coroutines.launch
+import nl.jacobras.composeactionmenu.ActionMenu
+import nl.jacobras.composeactionmenu.RegularActionItem
+
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+@Composable
+internal fun GalleryApp() {
+    SpecialTheme(darkTheme = GalleryState.darkTheme) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Gallery") },
+                    actions = {
+                        ActionMenu(
+                            items = listOf(
+                                RegularActionItem(
+                                    key = "fontScale",
+                                    title = "Font scale",
+                                    iconVector = when (GalleryState.fontScale) {
+                                        FontScale.Regular -> Icons.Default.TextIncrease
+                                        FontScale.Large -> Icons.Default.TextDecrease
+                                    },
+                                    onClick = {
+                                        GalleryState.fontScale = GalleryState.fontScale.next()
+                                    }
+                                ),
+                                RegularActionItem(
+                                    key = "darkTheme",
+                                    title = "Dark theme",
+                                    iconVector = if (GalleryState.darkTheme) {
+                                        Icons.Default.LightMode
+                                    } else {
+                                        Icons.Default.DarkMode
+                                    },
+                                    onClick = { GalleryState.darkTheme = !GalleryState.darkTheme }
+                                )
+                            )
+                        )
+                    }
+                )
+            }
+        ) { paddingValues ->
+            val navigator = rememberListDetailPaneScaffoldNavigator<Screen>()
+            val scope = rememberCoroutineScope()
+
+            Box(modifier = Modifier.padding(paddingValues)) {
+                ListDetailPaneScaffold(
+                    directive = navigator.scaffoldDirective,
+                    value = navigator.scaffoldValue,
+                    listPane = {
+                        Column {
+                            for (screen in Screen.entries) {
+                                Text(
+                                    text = screen.title,
+                                    modifier = Modifier.clickable {
+                                        scope.launch {
+                                            navigator.navigateTo(
+                                                pane = ListDetailPaneScaffoldRole.Detail,
+                                                contentKey = screen
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    },
+                    detailPane = {
+                        val screen = navigator.currentDestination?.contentKey
+                        if (screen != null) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.TopCenter
+                            ) {
+                                screen.content()
+                            }
+                        }
+                    }
+                )
+            }
+        }
+    }
+}

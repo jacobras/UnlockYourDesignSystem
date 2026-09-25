@@ -5,7 +5,7 @@ kotlin = "2.4.20"
 lifecycleRuntimeKtx = "2.11.0"
 
 compose = "1.12.0" # https://github.com/JetBrains/compose-multiplatform/releases
-material3 = "1.13.0-alpha01"
+material3 = "1.12.0-alpha03"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.13.0" }
@@ -14,7 +14,11 @@ androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtim
 compottie = { module = "io.github.alexzhirkevich:compottie-lite", version.ref = "compottie" }
 compottie-resources = { module = "io.github.alexzhirkevich:compottie-resources", version.ref = "compottie" }
 
+compose-action-menu = { module = "nl.jacobras:compose-action-menu", version = "3.1.1" }
+compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version = "1.3.0-rc01" }
+compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version = "1.3.0-rc01" }
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose" }
+compose-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version = "1.7.3" }
 compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
 compose-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose" }
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose" }
