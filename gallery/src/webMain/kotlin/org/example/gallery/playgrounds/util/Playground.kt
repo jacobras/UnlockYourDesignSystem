@@ -17,9 +17,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import org.example.gallery.GalleryState
 
 @Composable
 fun Playground(
@@ -34,9 +38,12 @@ fun Playground(
                 .padding(16.dp),
             contentAlignment = Alignment.TopCenter
         ) {
-            provideGalleryFontSize {
-                component()
-            }
+            CompositionLocalProvider(
+                LocalDensity provides Density(
+                    density = LocalDensity.current.density,
+                    fontScale = GalleryState.fontScale.scale
+                )
+            ) { component() }
         }
 
         VerticalDivider()

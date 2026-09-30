@@ -7,7 +7,6 @@ import com.example.util.design.components.SpecialButton
 import org.example.gallery.playgrounds.util.Playground
 import org.example.gallery.playgrounds.util.controls.LabelControl
 import org.example.gallery.playgrounds.util.controls.SwitchControl
-import org.example.gallery.playgrounds.util.provideGalleryFontSize
 
 @Composable
 fun ButtonPlayground() {
@@ -15,13 +14,11 @@ fun ButtonPlayground() {
 
     Playground(
         component = {
-            provideGalleryFontSize {
-                SpecialButton(
-                    label = state.label.value,
-                    enabled = state.enabled.value,
-                    onClick = {}
-                )
-            }
+            SpecialButton(
+                label = state.label.value,
+                enabled = state.enabled.value,
+                onClick = {}
+            )
         },
         controls = { ButtonPlaygroundControls(state) }
     )
